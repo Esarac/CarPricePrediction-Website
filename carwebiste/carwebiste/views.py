@@ -1,5 +1,13 @@
 from django.http import HttpResponse
 from django.template import Template, Context
+from django.shortcuts import render
+
+import pickle
+import pandas as pd
+import os
+
+from sklearn.model_selection import train_test_split
+from sklearn import metrics
 
 MARCAS = ['Jeep', 'Volkswagen', 'Mercedes-Benz', 'Toyota', 'Land Rover',
        'Nissan', 'Renault', 'Dodge', 'BMW', 'Suzuki', 'Daihatsu', 'Honda',
@@ -98,11 +106,31 @@ COLOR = ['Rojo', 'Amarillo', 'Azul', 'Verde', 'Blanco', 'Negro',
 
 #Vistas
 def form(request):
-    doc_file = open('C:/Users/ariza/Documents/GitHub/Cars_Deployment/carwebiste/carwebiste/templates/form.html') # Relative path plz
-    plt = Template(doc_file.read())
-    doc_file.close()
+    return render(request, 'form.html', {"marcas":MARCAS, "modelos":MODELO, "carrocerias":CARROCERIA, "combustibles":COMBUSTIBLE, "colores":COLOR})
 
-    ctx=Context({"marcas":MARCAS, "modelos":MODELO, "carrocerias":CARROCERIA, "combustibles":COMBUSTIBLE, "colores":COLOR})
-    doc=plt.render(ctx)
+def result(request):
+    marca = request.GET['marca']
+    modelo = request.GET['modelo']
+    anio = int(request.GET['anio'])
+    carroceria = request.GET['carroceria']
+    combustible = request.GET['combustible']
+    color = request.GET['color']
 
-    return HttpResponse(doc)
+    path = os.path.join(os.path.dirname(__file__), "resources/car.pickle.dat")
+    print(path)
+    model = pickle.load(open(path, "rb"))
+
+    cols_when_model_builds = model.get_booster().feature_names
+
+
+    car = {'Marca_'+marca:1, 'Modelo_'+modelo:1,'Anio':anio, 'Tipo de carroceria_'+carroceria:1, 'Tipo de combustible_'+combustible:1, 'Color_'+color:1}
+    car_df = pd.DataFrame(columns=cols_when_model_builds)
+    car_df = car_df.append(car, ignore_index = True)
+
+    print(car_df.head())
+
+    val_pred = model.predict(car_df)
+
+
+
+    return HttpResponse(str(val_pred))

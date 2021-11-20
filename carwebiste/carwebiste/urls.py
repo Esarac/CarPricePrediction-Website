@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from carwebiste.views import form
+from carwebiste import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pricing_calculator/', form),
+    path('pricing_calculator/', views.form),
+    path('result/', views.result),
 ]

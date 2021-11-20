@@ -54,7 +54,7 @@ ROOT_URLCONF = 'carwebiste.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['carwebiste/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
