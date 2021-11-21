@@ -3,17 +3,34 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Form</title>
+        <title>Calculador de Precios</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
     </head>
-    <body>
+    <body class="bg-primary text-white">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">
+                <h2 class="text-primary"><i class="fas fa-car"></i> Carros Colombia</h2>
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/pricing_calculator/">Calculador de Precios<span class="sr-only">(current)</span></a>
+                </li>
+                </ul>
+            </div>
+        </nav>
         <div class="container ml-2">
             <div class="row">
                 <div class="col-md-10">
                     <div>
-                        <h2 class="my-5 text-primary">Form</h2>
-                        <form action="/result/" method="GET">
-                            <div>
+                        <h1 class="my-5">Calculador de Precios</h2>
+                        <form action="result/" method="GET">
+                            <div class="my-5">
                                 <div class="form-group">
                                     <label>Marca</label>
                                     <select class="form-control" name="marca" id="marca">
@@ -59,8 +76,10 @@
                                     </select>
                                 </div>
                             </div>
-                            <div>
-                                <input type="submit" value="done">
+                            <div class="my-5">
+                                <button type="submit" value="Submit" name="action" class="btn btn-light text-dark">
+                                    Calcular
+                                </button>
                             </div>
                         </form>
                     </div>

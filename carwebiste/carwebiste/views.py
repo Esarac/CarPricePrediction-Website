@@ -103,8 +103,12 @@ COLOR = ['Rojo', 'Amarillo', 'Azul', 'Verde', 'Blanco', 'Negro',
        'No Disponible', 'Gris', 'Dorado', 'Beige', 'Cafe', 'Naranja',
        'Plateado', 'Violeta', 'Lila', 'Rosa', 'Celeste', 'Champaña',
        'Nacar', 'Ocre', 'Tan']
+MAE = 4866175.178500091
 
 #Vistas
+def index(request):
+    return render(request, 'index.html')
+
 def form(request):
     return render(request, 'form.html', {"marcas":MARCAS, "modelos":MODELO, "carrocerias":CARROCERIA, "combustibles":COMBUSTIBLE, "colores":COLOR})
 
@@ -117,20 +121,18 @@ def result(request):
     color = request.GET['color']
 
     path = os.path.join(os.path.dirname(__file__), "resources/car.pickle.dat")
-    print(path)
     model = pickle.load(open(path, "rb"))
 
     cols_when_model_builds = model.get_booster().feature_names
 
-
     car = {'Marca_'+marca:1, 'Modelo_'+modelo:1,'Anio':anio, 'Tipo de carroceria_'+carroceria:1, 'Tipo de combustible_'+combustible:1, 'Color_'+color:1}
     car_df = pd.DataFrame(columns=cols_when_model_builds)
     car_df = car_df.append(car, ignore_index = True)
-
-    print(car_df.head())
+    car_df = car_df.fillna(0)
 
     val_pred = model.predict(car_df)
+    
+    price_min = "${:,.2f}".format(val_pred[0]-MAE)
+    price_max = "${:,.2f}".format(val_pred[0]+MAE)
 
-
-
-    return HttpResponse(str(val_pred))
+    return render(request, 'result.html', {"price_max":price_max, "price_min":price_min})

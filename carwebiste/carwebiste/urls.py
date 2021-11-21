@@ -20,5 +20,6 @@ from carwebiste import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pricing_calculator/', views.form),
-    path('result/', views.result),
+    path('pricing_calculator/result/', views.result),
+    path('', views.index, name='home')
 ]
